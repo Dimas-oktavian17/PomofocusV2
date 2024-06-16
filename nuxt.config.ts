@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts'
   ],
   colorMode: {
-    classSuffix: ''
+    classSuffix: '',
+    preference: 'light'
   }
 })
