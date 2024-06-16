@@ -1,3 +1,3 @@
 <template>
-    stater
+    <BaseStatusLabel />
 </template>

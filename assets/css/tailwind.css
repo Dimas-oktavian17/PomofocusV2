@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .focussed {
+        @apply text-red-900 bg-red-200 border border-red-900 border-solid rounded-full fill-red-800 hover:bg-red-100
+    }
+
+    .shorted {
+        @apply text-green-900 bg-green-200 border border-green-900 border-solid rounded-full fill-green-800 hover:bg-green-100
+    }
+
+    .longted {
+        @apply text-blue-900 bg-blue-200 border border-blue-900 border-solid rounded-full fill-blue-800 hover:bg-blue-100
+    }
+}
