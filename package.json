@@ -7,12 +7,21 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "generate-components": "bun x nuxi add component",
+    "generate-composable": "bun x nuxi add composable",
+    "generate-layout": "bun x nuxi add layout",
+    "generate-pages": "bun x nuxi add page",
+    "generate-plugin": "bun x nuxi add plugin",
+    "generate-middleware": "bun x nuxi add middleware",
+    "generate-api": "bun x nuxi add api"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@nuxt/fonts": "^0.7.0",
     "@nuxt/ui": "^2.17.0",
-    "@nuxtjs/google-fonts": "^3.2.0",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@pinia/nuxt": "^0.5.1",
     "nuxt": "^3.12.1",

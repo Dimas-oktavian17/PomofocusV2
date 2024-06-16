@@ -6,11 +6,15 @@ export default defineNuxtConfig({
     'nuxt-icon',
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
-    "@nuxtjs/google-fonts",
     '@vueuse/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/seo',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
-  ]
+    '@nuxt/fonts'
+  ],
+  colorMode: {
+    classSuffix: '',
+    preference: 'light'
+  }
 })
