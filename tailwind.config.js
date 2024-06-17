@@ -6,7 +6,7 @@ export default {
     extend: {
       fontFamily: {
         custom: ['roboto-flex']
-      }
+      },
     },
   },
   plugins: [],
