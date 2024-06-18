@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
     '@vueuse/nuxt',
+    '@vueuse/sound/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/seo',
     '@pinia/nuxt',
