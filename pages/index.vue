@@ -7,6 +7,8 @@ const { isOpen, isSetttings } = storeToRefs(useModal)
 const { metaSymbol } = useShortcuts()
 // watchEffect(() => useCounter.counter === 4 ? useCounter.counter = 1 : 0)
 const useMenus = useMenu()
+const useSetting = useSettings()
+const useSettingToggles = useSettingsToggle()
 onKeyStroke('k', (event) => {
     if (event.ctrlKey) {
         event.preventDefault()
@@ -71,8 +73,37 @@ onKeyStroke('p', (event) => {
                             @click="isSetttings = false" />
                     </div>
                 </template>
-
-                <Placeholder class="h-32" />
+                <section class="flex flex-col ">
+                    <div class="grid grid-cols-2 place-items-center">
+                        <h1
+                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                            Dark mode
+                        </h1>
+                        <div
+                            class="py-[10px] text-red-300 bg-transparent shadow-none place-self-end hover:bg-transparent">
+                            <UToggle class="bg-red-300" :model-value="true" />
+                        </div>
+                    </div>
+                    <!-- Number input section -->
+                    <div v-for="({ title, status }) in useSetting" :key="status"
+                        class="grid grid-cols-2 mb-4 place-content-center place-items-center">
+                        <h1
+                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                            {{ title }}
+                        </h1>
+                        <UInput class="w-1/3 place-self-end" type="number" size="sm" placeholder="25" color="pink"
+                            variant="outline" :v-model="status" />
+                    </div>
+                    <!-- Toggles sensor section -->
+                    <div v-for="({ title, status }) in useSettingToggles" :key="status"
+                        class="grid grid-cols-2 mb-4 place-content-center place-items-center">
+                        <h1
+                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                            {{ title }}
+                        </h1>
+                        <UToggle class="bg-red-300 place-self-end" :model-value="true" />
+                    </div>
+                </section>
             </UCard>
         </UModal>
     </UCard>

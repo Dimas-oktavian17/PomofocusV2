@@ -14,3 +14,19 @@ export const useSettings = () => {
         },
     ])
 }
+export const useSettingsToggle = () => {
+    return ref([
+        {
+            title: 'Auto resume timer',
+            status: 'resumeTimer',
+        },
+        {
+            title: 'Sound',
+            status: 'soundTimer',
+        },
+        {
+            title: 'Notifications',
+            status: 'notificationsTimer',
+        },
+    ])
+}
