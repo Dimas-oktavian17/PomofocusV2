@@ -36,6 +36,8 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@vueuse/core": "^10.11.0",
     "@vueuse/nuxt": "^10.11.0",
-    "nuxt-icon": "^0.6.10"
+    "nuxt-icon": "^0.6.10",
+    "typescript": "^5.5.2",
+    "vue-tsc": "^1"
   }
 }
