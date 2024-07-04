@@ -1,32 +1,35 @@
 export const useSettings = () => {
     return ref([
         {
+            id: 1,
             title: 'Focus length',
-            status: 'focusedNumber',
+            status: 25
         },
         {
+            id: 2,
             title: 'Short break length',
-            status: 'shortbreakNumber',
+            status: 5,
         },
         {
+            id: 3,
             title: 'Long break length',
-            status: 'longbreakNumber',
+            status: 15,
         },
     ])
 }
 export const useSettingsToggle = () => {
-    return ref([
+    return reactive([
         {
             title: 'Auto resume timer',
-            status: 'resumeTimer',
+            status: false,
         },
         {
             title: 'Sound',
-            status: 'soundTimer',
+            status: false,
         },
         {
             title: 'Notifications',
-            status: 'notificationsTimer',
+            status: false,
         },
     ])
 }
