@@ -1,13 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  typescript: {
+    typeCheck: true,
+  },
   modules: [
     "@nuxt/ui",
     'nuxt-icon',
     "@nuxt/eslint",
     "@nuxtjs/tailwindcss",
     '@vueuse/nuxt',
-    '@vueuse/sound/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/seo',
     '@pinia/nuxt',

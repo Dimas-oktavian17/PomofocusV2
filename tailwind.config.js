@@ -7,6 +7,9 @@ export default {
       fontFamily: {
         custom: ['roboto-flex']
       },
+      colors: {
+        'red-900': '#471515',
+      },
     },
   },
   plugins: [],
