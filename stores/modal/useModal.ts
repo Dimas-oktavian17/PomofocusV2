@@ -1,5 +1,6 @@
 export const useModalStore = defineStore('Modal', () => {
     const isOpen = ref<boolean>(false)
     const isSetttings = ref<boolean>(false)
-    return { isOpen, isSetttings }
+    const modalSettings = () => isOpen.value ? isSetttings.value = false : isSetttings.value ? isOpen.value = false : ''
+    return { modalSettings, isOpen, isSetttings }
 })
