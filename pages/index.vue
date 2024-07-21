@@ -1,5 +1,6 @@
 <script setup>
 import { useModalStore } from '~/stores/modal/useModal';
+import { useFocusStore } from '~/stores/timer/useTimeFocus';
 import { useTimerStore } from '~/stores/timer/useTimer';
 // Composables
 const useMenus = useMenu()
@@ -8,6 +9,8 @@ const useSettingToggles = useSettingsToggle()
 const DarkMode = useDark()
 const useModal = useModalStore()
 const useTimer = useTimerStore()
+const useFocus = useFocusStore()
+const { FocusLength, LongBreak, ShortBreak } = storeToRefs(useFocus)
 const { isOpen, isSetttings } = storeToRefs(useModal)
 const { TimerCounter } = storeToRefs(useTimer)
 const { metaSymbol } = useShortcuts()
@@ -27,10 +30,8 @@ onKeyStroke('p', (event) => {
 watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useTimer.TimerStarted()
     useModal.modalSettings()
-})
-const y = computed(() => {
-    const item = useSetting.value.find(item => item.id === 2)
-    return item ? item.status : null
+    useTimer.TimerNotifications()
+    console.log(FocusLength.value);
 })
 </script>
 <template>
@@ -39,7 +40,7 @@ const y = computed(() => {
             <BaseStatusLabel />
         </template>
         <h1 class="font-normal text-red-950 text-9xl">
-            {{ y }}
+            {{ convertSecondsToMinutes(FocusLength * 60) }}
             {{ convertSecondsToMinutes(TimerCounter) }}
         </h1>
         <template #footer>
@@ -108,6 +109,7 @@ const y = computed(() => {
                             class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             {{ item.title }}
                         </h1>
+                        {{ item.status }}
                         <UInput v-model="item.status" class="w-1/3 place-self-end" type="number" size="sm"
                             placeholder="25" color="pink" variant="outline" />
                     </div>
