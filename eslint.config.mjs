@@ -6,7 +6,8 @@ export default withNuxt({
   rules: {
     'vue/no-multiple-template-root': 'off', // Example rule
     'vue/html-self-closing': 'off',
-    'vue/first-attribute-linebreak': 'off'
+    'vue/first-attribute-linebreak': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
     // ... add more custom rules as needed
   },
   // You can also add other ESLint configuration options here
