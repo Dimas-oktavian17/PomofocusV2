@@ -1,6 +1,7 @@
 <script setup>
+import { useclass } from '~/composables/style/class';
+import { useCounterStore } from '~/stores/counter/useCounter';
 import { useModalStore } from '~/stores/modal/useModal';
-import { useFocusStore } from '~/stores/timer/useTimeFocus';
 import { useTimerStore } from '~/stores/timer/useTimer';
 // Composables
 const useMenus = useMenu()
@@ -9,12 +10,13 @@ const useSettingToggles = useSettingsToggle()
 const DarkMode = useDark()
 const useModal = useModalStore()
 const useTimer = useTimerStore()
-const useFocus = useFocusStore()
-const { FocusLength, LongBreak, ShortBreak } = storeToRefs(useFocus)
+const useCounter = useCounterStore()
+const { CounterRealtime } = storeToRefs(useCounter)
+const { timerTheme, bgTheme, symbolTheme, keyTheme, labelTheme } = useclass()
 const { isOpen, isSetttings } = storeToRefs(useModal)
 const { TimerCounter } = storeToRefs(useTimer)
 const { metaSymbol } = useShortcuts()
-// const useCounter = useCounterStore()
+
 onKeyStroke('k', (event) => {
     if (event.ctrlKey) {
         event.preventDefault()
@@ -27,51 +29,53 @@ onKeyStroke('p', (event) => {
         isSetttings.value = true
     }
 });
+const FocusLength = computed(() => useSetting.value[0].status)
+// const ShortBreak = computed(() => useSetting.value[1].status)
+// const LongBreak = computed(() => useSetting.value[2].status)
 watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useTimer.TimerStarted()
     useModal.modalSettings()
-    useTimer.TimerNotifications()
-    console.log(FocusLength.value);
+    useTimer.TimerNotifications(convertSecondsToMinutes(FocusLength.value * 60), convertSecondsToMinutes(TimerCounter.value))
+    useCounter.CountTheme()
 })
 </script>
 <template>
-    <UCard class="grid max-w-sm grid-cols-1 border-none shadow-none place-items-center ring-0 bg-red-50">
+    <UCard :class="bgTheme" class="grid max-w-sm grid-cols-1 border-none shadow-none place-items-center ring-0">
         <template #header>
             <BaseStatusLabel />
         </template>
-        <h1 class="font-normal text-red-950 text-9xl">
-            {{ convertSecondsToMinutes(FocusLength * 60) }}
+        <h1 :class="timerTheme" class="font-normal text-9xl">
             {{ convertSecondsToMinutes(TimerCounter) }}
         </h1>
         <template #footer>
-            <ButtonActions @settings="isOpen = true" @paused="useTimer.TimerPaused()"
-                @resumed="useTimer.TimerResumed()" />
+            <ButtonActions @settings="isOpen = true" @paused="useTimer.TimerPaused()" @resumed="useTimer.TimerResumed()"
+                @next="useCounter.counter++" />
         </template>
         <!-- Modal Section -->
         <UModal v-model="isOpen">
-            <UCard class=" bg-red-50">
+            <UCard :class="bgTheme">
                 <section class="flex flex-col ">
                     <div v-for="({ title, kbd, icon }) in useMenus" :key="icon"
                         class="grid grid-cols-2 place-items-center">
-                        <UButton v-if="title === 'Preferences'"
-                            class="text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
+                        <UButton v-if="title === 'Preferences'" :class="timerTheme"
+                            class="bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
                             size="sm" @click="isSetttings = true">
                             <UIcon :name="icon" dynamic class="size-7" />
                             {{ title }}
                         </UButton>
-                        <UButton v-else
-                            class="text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
+                        <UButton v-else :class="timerTheme"
+                            class="bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
                             size="sm">
                             <UIcon :name="icon" dynamic class="size-7" />
                             {{ title }}
                         </UButton>
-                        <div
-                            class="py-[10px] text-red-300 bg-transparent shadow-none place-self-end hover:bg-transparent">
-                            <UKbd class="text-red-300 bg-transparent border border-red-300 outline-none ring-0">
+                        <div :class="symbolTheme"
+                            class="py-[10px]  bg-transparent shadow-none place-self-end hover:bg-transparent">
+                            <UKbd :class="keyTheme" class="bg-transparent border outline-none ring-0">
                                 {{ metaSymbol }}
                             </UKbd>
                             +
-                            <UKbd class="text-red-300 bg-transparent border border-red-300 outline-none ring-0">
+                            <UKbd :class="keyTheme" class="bg-transparent border outline-none ring-0">
                                 {{ kbd }}
                             </UKbd>
                         </div>
@@ -80,48 +84,54 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
             </UCard>
         </UModal>
         <UModal v-model="isSetttings" prevent-close>
-            <UCard class=" bg-red-50">
+            <UCard :class="bgTheme">
                 <template #header>
                     <div class="flex items-center justify-between">
-                        <h3 class="text-xl font-bold leading-6 text-red-950">
+                        <h3 :class="timerTheme" class="text-xl font-bold leading-6 ">
                             Settings
                         </h3>
-                        <UButton icon="i-heroicons-x-mark-20-solid"
-                            class="-my-1 text-red-900 bg-transparent shadow-none hover:bg-transparent"
+                        <UButton :class="labelTheme" icon="i-heroicons-x-mark-20-solid"
+                            class="-my-1 bg-transparent shadow-none hover:bg-transparent"
                             @click="isSetttings = false" />
                     </div>
                 </template>
                 <section class="flex flex-col ">
                     <div class="grid grid-cols-2 place-items-center">
-                        <h1
-                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                        <h1 :class="labelTheme"
+                            class="font-normal bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             Dark mode
                         </h1>
-                        <div
-                            class="py-[10px] text-red-300 bg-transparent shadow-none place-self-end hover:bg-transparent">
+                        <div :class="symbolTheme"
+                            class="py-[10px]  bg-transparent shadow-none place-self-end hover:bg-transparent">
                             <UToggle v-model="DarkMode" :class="[DarkMode === true ? 'bg-red-300' : '']" />
                         </div>
                     </div>
                     <!-- Number input section -->
                     <div v-for="item in useSetting" :key="item.title"
                         class="grid grid-cols-2 mb-4 place-content-center place-items-center">
-                        <h1
-                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                        <h1 :class="labelTheme"
+                            class="font-normal bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             {{ item.title }}
                         </h1>
-                        {{ item.status }}
-                        <UInput v-model="item.status" class="w-1/3 place-self-end" type="number" size="sm"
-                            placeholder="25" color="pink" variant="outline" />
+                        <UInput v-if="CounterRealtime === 1" v-model="item.status" class="w-1/3 place-self-end"
+                            type="number" size="sm" placeholder="25" color="pink" variant="outline" />
+                        <UInput v-else-if="CounterRealtime === 2" v-model="item.status" class="w-1/3 place-self-end"
+                            type="number" size="sm" placeholder="25" color="green" variant="outline" />
+                        <UInput v-else v-model="item.status" class="w-1/3 place-self-end" type="number" size="sm"
+                            placeholder="25" color="blue" variant="outline" />
                     </div>
                     <!-- Toggles sensor section -->
                     <div v-for="item in useSettingToggles" :key="item.title"
                         class="grid grid-cols-2 mb-4 place-content-center place-items-center">
-                        <h1
-                            class="font-normal text-red-900 bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
+                        <h1 :class="labelTheme"
+                            class="font-normal bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             {{ item.title }}
                         </h1>
-                        <UToggle v-model="item.status" :class="[item.status === true ? 'bg-red-300' : '']"
-                            class="place-self-end" />
+                        <UToggle v-model="item.status" :class="{
+                            'bg-red-300': item.status === true && CounterRealtime === 1,
+                            'bg-green-300': item.status === true && CounterRealtime === 2,
+                            'bg-blue-300': item.status === true && CounterRealtime === 3,
+                        }" class="place-self-end" />
                     </div>
                 </section>
             </UCard>
