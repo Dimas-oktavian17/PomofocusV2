@@ -1,5 +1,9 @@
+<script setup>
+import { useclass } from './composables/style/class';
+const useClass = useclass().bgTheme
+</script>
 <template>
-    <div class="grid h-screen grid-cols-1 bg-red-50 place-items-center">
+    <div :class="useClass" class="grid h-screen grid-cols-1 place-items-center">
         <NuxtLayout>
             <NuxtPage />
         </NuxtLayout>
