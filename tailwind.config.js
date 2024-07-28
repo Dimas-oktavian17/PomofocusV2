@@ -9,6 +9,9 @@ export default {
       },
       colors: {
         'red-900': '#471515',
+        'focus-dark': '#0D0404',
+        'short-dark': '#040d06',
+        'long-dark': '#04090d',
       },
     },
   },
