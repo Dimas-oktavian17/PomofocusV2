@@ -7,18 +7,23 @@ export const useSettings = () => {
         },
         {
             id: 2,
-            title: 'Short break length',
+            title: 'Pomodoros until long break',
             status: 5,
         },
         {
             id: 3,
+            title: 'Short break length',
+            status: 5,
+        },
+        {
+            id: 4,
             title: 'Long break length',
             status: 15,
         },
     ])
 }
 export const useSettingsToggle = () => {
-    return reactive([
+    return ref([
         {
             title: 'Auto resume timer',
             status: false,
