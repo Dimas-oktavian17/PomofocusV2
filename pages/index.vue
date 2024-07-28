@@ -33,8 +33,7 @@ const FocusLength = computed(() => useSetting.value[0].status)
 // const ShortBreak = computed(() => useSetting.value[2].status)
 // const LongBreak = computed(() => useSetting.value[3].status)
 const UntilBreak = computed(() => useSetting.value[1].status)
-// const { } = useSettingToggles.value.
-// const AutoResumed = computed(()=> useSetting.value[0]/)
+const AutoResumedTimer = computed(() => useSettingToggles.value[0].status)
 const SoundToggle = computed(() => useSettingToggles.value[1].status)
 watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useTimer.TimerStarted()
@@ -43,7 +42,8 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
         convertSecondsToMinutes(FocusLength.value * 60),
         convertSecondsToMinutes(TimerCounter.value),
         UntilBreak.value,
-        SoundToggle.value
+        SoundToggle.value,
+        AutoResumedTimer.value
     )
     useCounter.CountTheme()
 })
@@ -57,7 +57,7 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
             <h1 :class="timerTheme" class="font-normal text-9xl">
                 {{ convertSecondsToMinutes(TimerCounter) }}
             </h1>
-            {{ SoundToggle }} {{ counterTheme }}
+            {{ SoundToggle }} {{ counterTheme }}:{{ AutoResumedTimer }}
             <span :class="timerTheme" class="text-center place-self-center">
                 #{{ counterTheme === 1 ? counterPomo : counterTheme === 2 ? counterShortBreak : counterLongBreak
                 }}</span>
