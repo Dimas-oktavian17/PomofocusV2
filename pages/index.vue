@@ -11,7 +11,7 @@ const DarkMode = useDark()
 const useModal = useModalStore()
 const useTimer = useTimerStore()
 const useCounter = useCounterStore()
-const { CounterRealtime } = storeToRefs(useCounter)
+const { CounterRealtime, counterPomo, counterShortBreak, counterLongBreak, counterTheme } = storeToRefs(useCounter)
 const { timerTheme, bgTheme, symbolTheme, keyTheme, labelTheme } = useclass()
 const { isOpen, isSetttings } = storeToRefs(useModal)
 const { TimerCounter } = storeToRefs(useTimer)
@@ -30,12 +30,21 @@ onKeyStroke('p', (event) => {
     }
 });
 const FocusLength = computed(() => useSetting.value[0].status)
-// const ShortBreak = computed(() => useSetting.value[1].status)
-// const LongBreak = computed(() => useSetting.value[2].status)
+// const ShortBreak = computed(() => useSetting.value[2].status)
+// const LongBreak = computed(() => useSetting.value[3].status)
+const UntilBreak = computed(() => useSetting.value[1].status)
+const AutoResumedTimer = computed(() => useSettingToggles.value[0].status)
+const SoundToggle = computed(() => useSettingToggles.value[1].status)
 watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useTimer.TimerStarted()
     useModal.modalSettings()
-    useTimer.TimerNotifications(convertSecondsToMinutes(FocusLength.value * 60), convertSecondsToMinutes(TimerCounter.value))
+    useTimer.TimerNotifications(
+        convertSecondsToMinutes(FocusLength.value * 60),
+        convertSecondsToMinutes(TimerCounter.value),
+        UntilBreak.value,
+        SoundToggle.value,
+        AutoResumedTimer.value
+    )
     useCounter.CountTheme()
 })
 </script>
@@ -44,12 +53,18 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
         <template #header>
             <BaseStatusLabel />
         </template>
-        <h1 :class="timerTheme" class="font-normal text-9xl">
-            {{ convertSecondsToMinutes(TimerCounter) }}
-        </h1>
+        <section class="grid grid-cols-1 place-items-center">
+            <h1 :class="timerTheme" class="font-normal text-9xl">
+                {{ convertSecondsToMinutes(TimerCounter) }}
+            </h1>
+            {{ SoundToggle }} {{ counterTheme }}:{{ AutoResumedTimer }}
+            <span :class="timerTheme" class="text-center place-self-center">
+                #{{ counterTheme === 1 ? counterPomo : counterTheme === 2 ? counterShortBreak : counterLongBreak
+                }}</span>
+        </section>
         <template #footer>
             <ButtonActions @settings="isOpen = true" @paused="useTimer.TimerPaused()" @resumed="useTimer.TimerResumed()"
-                @next="useCounter.counter++" />
+                @next="useCounter.counterTheme++" />
         </template>
         <!-- Modal Section -->
         <UModal v-model="isOpen">
@@ -58,13 +73,13 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                     <div v-for="({ title, kbd, icon }) in useMenus" :key="icon"
                         class="grid grid-cols-2 place-items-center">
                         <UButton v-if="title === 'Preferences'" :class="timerTheme"
-                            class="bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
+                            class="bg-transparent shadow-none outline-none dark:hover:bg-transparent ring-0 place-self-start hover:bg-transparent"
                             size="sm" @click="isSetttings = true">
                             <UIcon :name="icon" dynamic class="size-7" />
                             {{ title }}
                         </UButton>
                         <UButton v-else :class="timerTheme"
-                            class="bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent"
+                            class="bg-transparent shadow-none outline-none dark:hover:bg-transparent ring-0 place-self-start hover:bg-transparent"
                             size="sm">
                             <UIcon :name="icon" dynamic class="size-7" />
                             {{ title }}
@@ -91,7 +106,7 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                             Settings
                         </h3>
                         <UButton :class="labelTheme" icon="i-heroicons-x-mark-20-solid"
-                            class="-my-1 bg-transparent shadow-none hover:bg-transparent"
+                            class="-my-1 bg-transparent shadow-none hover:bg-transparent dark:hover:bg-transparent dark:bg-transparent"
                             @click="isSetttings = false" />
                     </div>
                 </template>
@@ -103,7 +118,11 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                         </h1>
                         <div :class="symbolTheme"
                             class="py-[10px]  bg-transparent shadow-none place-self-end hover:bg-transparent">
-                            <UToggle v-model="DarkMode" :class="[DarkMode === true ? 'bg-red-300' : '']" />
+                            <UToggle v-model="DarkMode" :class="{
+                                'bg-red-300 dark:bg-red-900': CounterRealtime === 1,
+                                'bg-green-300 dark:bg-green-900': CounterRealtime === 2,
+                                'bg-blue-300 dark:bg-blue-900': CounterRealtime === 3,
+                            }" />
                         </div>
                     </div>
                     <!-- Number input section -->
@@ -127,10 +146,12 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                             class="font-normal bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             {{ item.title }}
                         </h1>
+                        {{ item.status }}
+                        {{ }}
                         <UToggle v-model="item.status" :class="{
-                            'bg-red-300': item.status === true && CounterRealtime === 1,
-                            'bg-green-300': item.status === true && CounterRealtime === 2,
-                            'bg-blue-300': item.status === true && CounterRealtime === 3,
+                            'bg-red-300 dark:bg-red-900': item.status === true && CounterRealtime === 1,
+                            'bg-green-300 dark:bg-green-900': item.status === true && CounterRealtime === 2,
+                            'bg-blue-300 dark:bg-blue-900': item.status === true && CounterRealtime === 3,
                         }" class="place-self-end" />
                     </div>
                 </section>
