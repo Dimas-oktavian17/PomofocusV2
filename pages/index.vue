@@ -30,8 +30,8 @@ onKeyStroke('p', (event) => {
     }
 });
 const FocusLength = computed(() => useSetting.value[0].status)
-// const ShortBreak = computed(() => useSetting.value[2].status)
-// const LongBreak = computed(() => useSetting.value[3].status)
+const ShortBreak = computed(() => useSetting.value[2].status)
+const LongBreak = computed(() => useSetting.value[3].status)
 const UntilBreak = computed(() => useSetting.value[1].status)
 const AutoResumedTimer = computed(() => useSettingToggles.value[0].status)
 const SoundToggle = computed(() => useSettingToggles.value[1].status)
@@ -40,6 +40,8 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useModal.modalSettings()
     useTimer.TimerNotifications(
         convertSecondsToMinutes(FocusLength.value * 60),
+        convertSecondsToMinutes(ShortBreak.value * 60),
+        convertSecondsToMinutes(LongBreak.value * 60),
         convertSecondsToMinutes(TimerCounter.value),
         UntilBreak.value,
         SoundToggle.value,
@@ -57,14 +59,14 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
             <h1 :class="timerTheme" class="font-normal text-9xl">
                 {{ convertSecondsToMinutes(TimerCounter) }}
             </h1>
-            {{ SoundToggle }} {{ counterTheme }}:{{ AutoResumedTimer }}
+            short:{{ ShortBreak }} long:{{ LongBreak }} {{ SoundToggle }} {{ counterTheme }}:{{ AutoResumedTimer }}
             <span :class="timerTheme" class="text-center place-self-center">
                 #{{ counterTheme === 1 ? counterPomo : counterTheme === 2 ? counterShortBreak : counterLongBreak
                 }}</span>
         </section>
         <template #footer>
             <ButtonActions @settings="isOpen = true" @paused="useTimer.TimerPaused()" @resumed="useTimer.TimerResumed()"
-                @next="useCounter.counterTheme++" />
+                @next="useTimer.TimerNext()" />
         </template>
         <!-- Modal Section -->
         <UModal v-model="isOpen">
@@ -147,7 +149,6 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                             {{ item.title }}
                         </h1>
                         {{ item.status }}
-                        {{ }}
                         <UToggle v-model="item.status" :class="{
                             'bg-red-300 dark:bg-red-900': item.status === true && CounterRealtime === 1,
                             'bg-green-300 dark:bg-green-900': item.status === true && CounterRealtime === 2,
