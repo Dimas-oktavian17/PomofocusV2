@@ -37,6 +37,7 @@
     "@vueuse/nuxt": "^10.11.0",
     "nuxt-icon": "^0.6.10",
     "typescript": "^5.5.4",
-    "vue-tsc": "^2"
+    "vite-plugin-checker": "^0.7.2",
+    "vue-tsc": "^2.0.29"
   }
 }

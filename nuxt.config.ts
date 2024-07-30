@@ -1,8 +1,15 @@
+import checker from 'vite-plugin-checker'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  typescript: {
-    typeCheck: true,
+  vite: {
+    plugins: [
+      checker({
+        // e.g. use TypeScript check
+        typescript: true,
+      }),
+    ]
   },
   modules: [
     "@nuxt/ui",
