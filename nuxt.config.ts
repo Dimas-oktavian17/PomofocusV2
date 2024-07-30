@@ -21,10 +21,12 @@ export default defineNuxtConfig({
     '@nuxtjs/seo',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
-    '@nuxt/fonts'
+    '@nuxt/fonts',
+    // '@nuxtjs/pwa',
   ],
   colorMode: {
     classSuffix: '',
     preference: 'light'
-  }
+  },
+
 })

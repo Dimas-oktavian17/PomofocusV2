@@ -15,7 +15,9 @@ export const useTimerStore = defineStore('Timer', () => {
             // ? move value to long break theme && set pomo value to default value
             reset()
             // ? check condition by auto resumed 
-            useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value)
+            if (AutoResumedTimer) TimerStatus.value = true
+            if (!AutoResumedTimer) TimerStatus.value = false
+            // useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value)
             counterTheme.value = 3
             counterLongBreak.value = UntilBreak
             // ? Sounds activate
@@ -23,15 +25,19 @@ export const useTimerStore = defineStore('Timer', () => {
         } else if (UntilBreak === counterPomo.value && !SoundsToggle) {
             // ? move value to long break theme && set pomo value to default value
             reset()
-            // ? check condition by auto resumed 
-            useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value)
+            // ? check condition by auto resumed
+            if (AutoResumedTimer) TimerStatus.value = true
+            if (!AutoResumedTimer) TimerStatus.value = false
+            // useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value)
             counterTheme.value = 3
             counterLongBreak.value = UntilBreak
             // ? without sounds activate
         } // Assuming you have access to the necessary variables and functions
         else if (UntilBreak !== counterPomo.value && SoundsToggle) {
             reset();
-            useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value);
+            if (AutoResumedTimer) TimerStatus.value = true
+            if (!AutoResumedTimer) TimerStatus.value = false
+            // useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value);
             // ? cheking condtions based on theme values
             switch (counterTheme.value) {
                 case 1:
@@ -50,7 +56,9 @@ export const useTimerStore = defineStore('Timer', () => {
         }
         else {
             reset();
-            useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value);
+            if (AutoResumedTimer) TimerStatus.value = true
+            if (!AutoResumedTimer) TimerStatus.value = false
+            // useResumedTimer().resumedLogic(AutoResumedTimer, TimerStatus.value);
             // ? cheking condtions based on theme values
             switch (counterTheme.value) {
                 case 1:
@@ -73,11 +81,13 @@ export const useTimerStore = defineStore('Timer', () => {
     }
     const TimerPaused = () => {
         TimerStatus.value = false
-        sound.playSound('/click.wav');
+        // sound.playSound('/click.wav');
+        console.log('clik pasuse');
     }
     const TimerResumed = () => {
         TimerStatus.value = true
-        sound.playSound('/click.wav');
+        // sound.playSound('/click.wav');
+        console.log('clik resume');
     }
     const TimerStarted = () => TimerStatus.value === false ? pause() : resume()
     // Timer logic
