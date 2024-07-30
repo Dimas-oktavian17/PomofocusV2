@@ -5,7 +5,6 @@ import { useCounterStore } from '../counter/useCounter';
 export const useTimerStore = defineStore('Timer', () => {
     const { counter, reset, pause, resume } = useInterval(1000, { controls: true })
     const sound = sounds()
-    const { themeLogic } = useThemeLogic()
     const CounterStore = useCounterStore()
     const { counterPomo, counterTheme, counterShortBreak, counterLongBreak } = storeToRefs(CounterStore)
     // const useFocusStores = useFocusStore()
