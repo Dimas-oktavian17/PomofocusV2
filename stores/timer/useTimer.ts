@@ -72,8 +72,14 @@ export const useTimerStore = defineStore('Timer', () => {
         counterTheme.value++
         reset()
     }
-    const TimerPaused = () => TimerStatus.value = false
-    const TimerResumed = () => TimerStatus.value = true
+    const TimerPaused = () => {
+        TimerStatus.value = false
+        sound.playSound('/click.wav');
+    }
+    const TimerResumed = () => {
+        TimerStatus.value = true
+        sound.playSound('/click.wav');
+    }
     const TimerStarted = () => TimerStatus.value === false ? pause() : resume()
     // Timer logic
     const TimerNotifications = (focusTime: string, shortTime: string, longTime: string, timerCounter: string, UntilBreak: number, SoundsToggle: boolean, AutoResumedTimer: boolean) => {
