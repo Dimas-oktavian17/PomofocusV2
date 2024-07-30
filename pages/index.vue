@@ -37,7 +37,7 @@ const AutoResumedTimer = computed(() => useSettingToggles.value[0].status)
 const SoundToggle = computed(() => useSettingToggles.value[1].status)
 watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
     useTimer.TimerStarted()
-    useModal.modalSettings()
+    useModal.modalLogic()
     useTimer.TimerNotifications(
         convertSecondsToMinutes(FocusLength.value * 60),
         convertSecondsToMinutes(ShortBreak.value * 60),
@@ -59,7 +59,6 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
             <h1 :class="timerTheme" class="font-normal text-9xl">
                 {{ convertSecondsToMinutes(TimerCounter) }}
             </h1>
-            short:{{ ShortBreak }} long:{{ LongBreak }} {{ SoundToggle }} {{ counterTheme }}:{{ AutoResumedTimer }}
             <span :class="timerTheme" class="text-center place-self-center">
                 #{{ counterTheme === 1 ? counterPomo : counterTheme === 2 ? counterShortBreak : counterLongBreak
                 }}</span>
@@ -76,7 +75,7 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                         class="grid grid-cols-2 place-items-center">
                         <UButton v-if="title === 'Preferences'" :class="timerTheme"
                             class="bg-transparent shadow-none outline-none dark:hover:bg-transparent ring-0 place-self-start hover:bg-transparent"
-                            size="sm" @click="isSetttings = true">
+                            size="sm" @click="useModal.modalSettings()">
                             <UIcon :name="icon" dynamic class="size-7" />
                             {{ title }}
                         </UButton>
@@ -148,7 +147,6 @@ watchEffect(() => { //  useCounter.counter === 4 ? useCounter.counter = 1 : 0
                             class="font-normal bg-transparent shadow-none outline-none ring-0 place-self-start hover:bg-transparent">
                             {{ item.title }}
                         </h1>
-                        {{ item.status }}
                         <UToggle v-model="item.status" :class="{
                             'bg-red-300 dark:bg-red-900': item.status === true && CounterRealtime === 1,
                             'bg-green-300 dark:bg-green-900': item.status === true && CounterRealtime === 2,
